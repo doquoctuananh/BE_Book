@@ -4,24 +4,18 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Component
-public class JwtUntil {
-    @Value("${jwt.secert}")
+public class JwtUtil {
+    @Value("${jwt.secret}")
     private String key;
 
     @Value("${jwt.expiration}")
@@ -32,12 +26,15 @@ public class JwtUntil {
     }
 
     // tao token tu username
-    public String createToken(String username){
+    public String createToken(String username,String role){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(expiration)))
-                .signWith(SignatureAlgorithm.HS512, createKeySecert())
+                .signWith(SignatureAlgorithm.HS256, createKeySecert())
                 .compact();
     }
 
@@ -59,8 +56,15 @@ public class JwtUntil {
         return username;
     }
 
+    // trich xuat role
+    public String getRoleToken(String token){
+        String role = null;
+        role = (String) extraToken(token).get("role");
+        return role;
+    }
+
     //kiem tra thoi gian het han chua
-    public boolean getExpirationToken(String token){
+    public boolean isTokenExpired(String token){
         boolean expiration = false;
 
         expiration = extraToken(token).getExpiration().getTime() < new Date().getTime();
@@ -71,7 +75,7 @@ public class JwtUntil {
     public boolean verifyToken(String token,String username){
         boolean verified = false;
         String verifyUsename = getUserNameToken(token);
-        verified = verifyUsename.equals(username) && getExpirationToken(token);
+        verified = verifyUsename.equals(username) && !isTokenExpired(token);
         return verified;
     }
 
