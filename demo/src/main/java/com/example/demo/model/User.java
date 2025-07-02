@@ -22,12 +22,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "khong duong de trong")
-    @Length(min=8,max=20,message  ="toi thieu 8 ki tu toi da 20 ki tu")
+    @NotBlank(message = "ten dang nhap khong duong de trong")
+    @Length(min=8,max=20,message  ="username toi thieu 8 ki tu toi da 20 ki tu")
     private String username;
 
-    @NotBlank(message = "khong duo cde trong")
-    @Length(min = 8, max = 20, message = "toi thieu 8 ki tu toi da 20 ki tu")
+    @NotBlank(message = "mat khau khong duoc cde trong")
+//    @Length(min = 6, max = 20, message = "password toi thieu 6 ki tu toi da 20 ki tu")
     private String password;
 
     @Email(message ="chua dung dinh dang email")
@@ -36,16 +36,15 @@ public class User {
     @NotBlank(message = "khong duoc de trong")
     private String address;
 
-    @NotBlank(message = "khong duoc de trong")
     private boolean gender;
 
     @NotBlank(message = "khong duoc de trong")
-    @Pattern(regexp ="/(0|[3|5|7|8|9])+([0-9]{8})\\b/g",message = "chua dung dinh dang")
+    @Pattern(regexp ="^0[0-9]{9}$",message = "chua dung dinh dang")
     private String phone;
 
     private String status = "active";
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
 
