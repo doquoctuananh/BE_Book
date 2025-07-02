@@ -24,6 +24,8 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+
+//    Ho tro dang nhap username va password
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -42,17 +44,18 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/home",
-                                "/auth/login/**"
+                                "/",
+                                "/api/home",
+                                "/api/auth/login/**"
                         ).permitAll()
 
                         .requestMatchers(
-                                "/books/**",
-                                "/profile/**"
+                                "/api/books/**",
+                                "/api/profile/**"
                         ).hasAnyAuthority("USER")
 
                         .requestMatchers(
-                                "/dashboard/**"
+                                "/api/dashboard/**"
                         ).hasAnyAuthority("ADMIN")
 
                         .anyRequest().authenticated()
