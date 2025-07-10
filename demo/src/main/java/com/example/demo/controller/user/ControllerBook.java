@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/books")
 public class ControllerBook {
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<String> getBooks() {
         return ResponseEntity.ok().body("book page");
     }

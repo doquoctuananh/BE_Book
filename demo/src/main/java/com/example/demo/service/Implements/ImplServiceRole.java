@@ -16,4 +16,9 @@ public class ImplServiceRole implements IServiceRole {
     public Role findByName(String name) {
         return repoRole.findByName(name);
     }
+
+    @Override
+    public Role save(Role role) {
+        return repoRole.save(role);
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -19,11 +22,12 @@ public class Type {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "khong duoc de trong")
-    @Length(min = 8,message = "toi thieu 8 ki tu")
+//    @NotBlank(message = "khong duoc de trong")
+//    @Length(min = 8,message = "toi thieu 8 ki tu")
     @Column(name = "type_name")
     private String typeName;
 
     @OneToMany(mappedBy = "type",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonBackReference
     private List<Book> listBooks;
 }

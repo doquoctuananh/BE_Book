@@ -6,6 +6,7 @@ import com.example.demo.service.Implements.ImplServiceType;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -26,7 +27,7 @@ public class ControllerType {
     public ResponseEntity<List<Type>> getAll() {
         List<Type> listType = new ArrayList<>();
         listType = serviceType.findAllTypes();
-        return ResponseEntity.ok().body(listType);
+        return ResponseEntity.status(HttpStatus.OK).body(listType);
     }
 
 
@@ -34,13 +35,14 @@ public class ControllerType {
     @Transactional
     public ResponseEntity<?> createType(@Valid @RequestBody DTOType dtoType,
                                         BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldError().getDefaultMessage());
         }
         Type type = new Type();
         BeanUtils.copyProperties(dtoType, type);
         serviceType.saveType(type);
-        return ResponseEntity.ok().body(type);
+        return ResponseEntity.status(HttpStatus.CREATED).body(type);
     }
 
     @Transactional
@@ -54,11 +56,11 @@ public class ControllerType {
         }
         Type type = serviceType.findTypeById(id);
         if (type == null) {
-            return ResponseEntity.badRequest().body("Not found type with id " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found type with id " + id);
         }
         type.setTypeName(newDtoType.getTypeName());
         serviceType.saveType(type);
-        return ResponseEntity.ok().body(type);
+        return ResponseEntity.status(HttpStatus.OK).body(type);
     }
 
     @Transactional
@@ -76,9 +78,9 @@ public class ControllerType {
     public ResponseEntity<?> deleteType(@PathVariable("id") int typeId){
         Type type = serviceType.findTypeById(typeId);
         if (type == null) {
-            return ResponseEntity.badRequest().body("Not found type with id " + typeId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found type book with id " + typeId);
         }
         serviceType.deleteTypeById(typeId);
-        return ResponseEntity.ok().body("Delete successfully" + type);
+        return ResponseEntity.status(HttpStatus.OK).body(type);
     }
 }

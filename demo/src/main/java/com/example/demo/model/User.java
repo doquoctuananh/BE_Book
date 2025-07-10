@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,30 +23,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "ten dang nhap khong duong de trong")
-    @Length(min=8,max=20,message  ="username toi thieu 8 ki tu toi da 20 ki tu")
+//    @NotBlank(message = "ten dang nhap khong duong de trong")
+//    @Length(min=8,max=20,message  ="username toi thieu 8 ki tu toi da 20 ki tu")
     private String username;
 
-    @NotBlank(message = "mat khau khong duoc cde trong")
+//    @NotBlank(message = "mat khau khong duoc cde trong")
 //    @Length(min = 6, max = 20, message = "password toi thieu 6 ki tu toi da 20 ki tu")
     private String password;
 
-    @Email(message ="chua dung dinh dang email")
+//    @Email(message ="chua dung dinh dang email")
     private String email;
 
-    @NotBlank(message = "khong duoc de trong")
+//    @NotBlank(message = "khong duoc de trong")
     private String address;
 
     private boolean gender;
 
-    @NotBlank(message = "khong duoc de trong")
-    @Pattern(regexp ="^0[0-9]{9}$",message = "chua dung dinh dang")
+//    @NotBlank(message = "khong duoc de trong")
+//    @Pattern(regexp ="^0[0-9]{9}$",message = "chua dung dinh dang")
     private String phone;
 
     private String status = "active";
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name = "role_id")
+    @JsonBackReference
     private Role role;
 
     @OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval = true)

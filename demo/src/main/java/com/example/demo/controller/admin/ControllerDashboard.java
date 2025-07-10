@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/dashboard")
 public class ControllerDashboard {
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<String> dashboard() {
         return ResponseEntity.ok("DASHBOARD");
     }

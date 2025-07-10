@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +27,7 @@ public class Book {
     private String bookName;
 
     @Column(columnDefinition = "text")
-    @Length(min = 20, max = 100, message = "toi thieu 20 ki tu toi da 100 ki tu")
+    @Length(min = 4, max = 100, message = "toi thieu 20 ki tu toi da 100 ki tu")
     private String description;
 
     @Min(value = 0,message = "gia phai lon hon 0")
@@ -40,16 +42,18 @@ public class Book {
     @NotBlank(message="khong duoc de trong")
     private String language;
 
-    private String image;
+    private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
+    @JsonManagedReference
     private Type type;
 
     @OneToMany(mappedBy = "book")
     private List<Cart> listCart;
 
     @OneToMany(mappedBy ="importBook")
+    @JsonBackReference
     private List<ImportBook> listImportBooks;
 
     @OneToMany(mappedBy = "book")
