@@ -17,4 +17,9 @@ public interface IServiceBook {
                                               String bookName,
                                                  Integer type ,
                                               Pageable pageable);
+    Page<Book> searchBooksByLanguageAndPriceAndType(Pageable pageable,
+                                                    String language,
+                                                    Float minPrice,
+                                                    Float maxPrice,
+                                                    Integer type);
 }

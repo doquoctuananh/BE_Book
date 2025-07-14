@@ -28,4 +28,14 @@ public interface IRepositoryBook extends JpaRepository<Book, Integer> {
                                               @Param("bookName")String bookName,
                                               @Param("type") Integer type ,
                                               Pageable pageable);
+    @Query("select b from Book b where " +
+            " (:language is null or b.language like concat('%',:language,'%') ) " +
+            " and (:minPrice is null  or :minPrice <= b.price ) " +
+            "and (:maxPrice is null or b.price <= :maxPrice)" +
+            " and (:type is null or b.type.id = :type)")
+    Page<Book> searchBooksByLanguageAndPriceAndType(Pageable pageable,
+                                                    @Param("language") String language,
+                                                    @Param("minPrice") Float minPrice,
+                                                    @Param("maxPrice") Float maxPrice,
+                                                    @Param("type") Integer type);
 }

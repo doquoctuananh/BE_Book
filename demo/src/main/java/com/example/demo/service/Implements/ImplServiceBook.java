@@ -48,4 +48,10 @@ public class ImplServiceBook implements IServiceBook {
         return repositoryBook.searchByAuthorAndBookNameAndType(author, bookName,
                 type, pageable);
     }
+
+    @Override
+    public Page<Book> searchBooksByLanguageAndPriceAndType(Pageable pageable, String language, Float minPrice, Float maxPrice, Integer type) {
+        return repositoryBook.searchBooksByLanguageAndPriceAndType(pageable, language,
+                                                                minPrice, maxPrice, type);
+    }
 }
